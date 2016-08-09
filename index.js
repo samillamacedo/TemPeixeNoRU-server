@@ -3,6 +3,8 @@ const http = require('http')
 var dadosMock = require('./database-mock');
 
 const server = http.createServer((request, response) => {
+  console.log(request.url)
+
   response.writeHead(200, {
     'Content-Type': 'application/json; charset=utf-8',
   })
