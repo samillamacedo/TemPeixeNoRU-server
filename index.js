@@ -1,6 +1,9 @@
 const http = require('http')
 
 var dadosMock = require('./database-mock');
+var dadosMock1 = require('./database-mock1');
+
+var count = 0;
 
 const server = http.createServer((request, response) => {
   if(request.url != '/api/v1/cardapio.json'){
@@ -15,7 +18,11 @@ const server = http.createServer((request, response) => {
     'Content-Type': 'application/json; charset=utf-8',
   })
 
-  response.end(JSON.stringify(dadosMock))
+  if(count++ % 2 == 0){
+    response.end(JSON.stringify(dadosMock))
+  }else{
+    response.end(JSON.stringify(dadosMock1))
+  }
 })
 
 server.listen(process.env.PORT || 2800)
