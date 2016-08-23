@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "cardapio do RU da UFABC",
   "main": "index.js",
-  "engine": {
+  "engines": {
     "node": "6.2.x"
   },
   "scripts": {
