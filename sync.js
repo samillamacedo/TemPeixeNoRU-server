@@ -179,8 +179,8 @@ exports.fetch = (next) => {
             }
 
             // Push group only if meal exists
-            if(meal.items)
-            menu.meals.push(meal)
+            if(meal.items.length > 0)
+              menu.meals.push(meal)
           }
 
           json.menu.push(menu)
