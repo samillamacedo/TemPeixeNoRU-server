@@ -1,9 +1,13 @@
 const http = require('http')
-
 const sync = require('./sync')
-
 const SYNC_HOURS = 1
 
+// Server Configurations
+let env = process.env
+const serverPort = env.OPENSHIFT_NODEJS_PORT || env.PORT || 8080
+const serverIPAddress = env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+
+// Global cardapio data
 let cardapioData = null
 let cardapioError = null
 
@@ -17,9 +21,9 @@ const server = http.createServer((request, response) => {
   }
 
   // If in error state...
-  if(cardapioError){
+  if(cardapioError || !cardapioData){
     response.writeHead(500, {})
-    response.end(cardapioError)
+    response.end(cardapioError ? cardapioError : 'Cardapio not synced.')
     return;
   }
 
@@ -50,9 +54,11 @@ function syncCardapio(){
   })
 }
 
+// Lift server
+server.listen(serverPort, serverIPAddress, (err) => {
+  console.log(`Server is UP: ${serverIPAddress}:${serverPort}`)
+})
+
 // Create a timer to fetch the cardapio every hour
 setInterval(syncCardapio, 60 * 1000 * 60 * SYNC_HOURS)
 syncCardapio()
-
-server.listen(process.env.PORT || 2800)
-console.log('Server is listening')
