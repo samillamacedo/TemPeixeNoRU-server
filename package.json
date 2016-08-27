@@ -28,6 +28,7 @@
     "fcm-push": "^1.0.7",
     "forever": "^0.15.2",
     "lodash": "^4.14.1",
+    "node-schedule": "^1.1.1",
     "pdf2json": "^1.1.5",
     "python-shell": "^0.4.0",
     "request": "^2.72.0",
