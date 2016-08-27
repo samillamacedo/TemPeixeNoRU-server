@@ -86,7 +86,7 @@ function findMeal(menu, group){
 }
 
 // Schedule lunch notifications
-var lunch = schedule.scheduleJob('0 0 4 * * *', function(){
+var lunch = schedule.scheduleJob('0 30 10 * * *', function(){
   buildAndPush('Almoço')
 });
 
