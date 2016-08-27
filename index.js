@@ -62,3 +62,8 @@ server.listen(serverPort, serverIPAddress, (err) => {
 // Create a timer to fetch the cardapio every hour
 setInterval(syncCardapio, 60 * 1000 * 60 * SYNC_HOURS)
 syncCardapio()
+
+// Auto ping to keep server alive every 5 minutes
+setInterval(function() {
+    http.get("http://tempeixenoru.herokuapp.com");
+}, 300000)
