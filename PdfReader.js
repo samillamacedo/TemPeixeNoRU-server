@@ -9,6 +9,7 @@ module.exports = PdfReader
 // pdf2txt.py -t text -L 0.5 -A tmp/cardapio3.pdf
 PdfReader.read = function read(file, next) {
   let output = ''
+  let a
 
   let pdf2txt = spawn('pdf2txt.py', [
     '-t', 'xml',
