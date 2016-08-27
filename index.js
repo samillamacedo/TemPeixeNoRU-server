@@ -129,9 +129,10 @@ function buildAndPush(meal){
   let titleVegetarian =`${meal} de ${dayName}`
 
   // Push notification
-  Pusher.push(['lunch', 'vegetarian'], titleVegetarian, txtVegetarian)
-  Pusher.push(['lunch', 'meat'], titleMeat, txtVegetarian)
-  Pusher.push(['teste'], titleMeat, txtVegetarian)
+  let tag = (meal == 'Almoço' ? 'lunch' : 'dinner')
+  Pusher.push([`${tag}_meat`], titleMeat, txtMeat)
+  Pusher.push([`${tag}_vegetarian`], titleVegetarian, txtVegetarian)
+  // Pusher.push(['teste'], titleMeat, txtVegetarian)
 }
 
 // Create a timer to fetch the cardapio every hour
