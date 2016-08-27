@@ -1,5 +1,11 @@
+const _ = require('lodash')
 const http = require('http')
+const schedule = require('node-schedule')
+
 const sync = require('./sync')
+const Pusher = require('./Pusher')
+const StringUtil = require('./StringUtil')
+
 const SYNC_HOURS = 1
 
 // Server Configurations
@@ -58,6 +64,75 @@ function syncCardapio(){
 server.listen(serverPort, (err) => {
   console.log(`Server is UP: ${serverIPAddress}:${serverPort}`)
 })
+
+// Week names
+const WEEK_NAMES = [
+  'Domingo',
+  'Segunda',
+  'Terça',
+  'Quarta',
+  'Quinta',
+  'Sexta',
+  'Sábado',
+]
+
+// Utility to find meals (returns first one)
+function findMeal(menu, group){
+  let meal = _.find(menu.meals, {group: group})
+  if(!meal)
+    return null
+
+  return meal.items[0].name
+}
+
+// Schedule lunch notifications
+var lunch = schedule.scheduleJob('0 0 4 * * *', function(){
+  buildAndPush('Almoço')
+});
+
+var dinner = schedule.scheduleJob('0 0 17 * * *', function(){
+  buildAndPush('Jantar')
+});
+
+// Builds up message from cardapio and pushes to users
+function buildAndPush(meal){
+  let now = new Date()
+  let day = now.getDay()
+  let dayName = WEEK_NAMES[day]
+
+  console.log(`Notify ${meal}: ${dayName}`);
+
+  // Find menu in cardapio
+  let menu = _.find(cardapioData.menu, {day: dayName})
+  if(!menu){
+    console.log('Menu was empty. Not notifying...')
+    return
+  }
+
+  // Find meals
+  let meat = findMeal(menu, `Carne (${meal})`)
+  let extra = findMeal(menu, 'Guarnição')
+  let vegetarian = findMeal(menu, 'Vegetariano')
+
+  // Skip if doesn't have meat (means it is not open)
+  if(!meat) {
+    console.log('Meat is empty. Looks like its closed')
+    return
+  }
+
+  // Prepare texts
+  let hasFish = StringUtil.simplify(meat).indexOf('peixe') >= 0
+  let txtMeat = `${meat} e ${extra}`
+  let titleMeat = (hasFish ? 'Sim, tem peixe no RU!' : 'Sem peixe, mas tem')
+
+  let txtVegetarian = `${vegetarian} e ${extra}`
+  let titleVegetarian =`${meal} de ${dayName}`
+
+  // Push notification
+  Pusher.push(['lunch', 'vegetarian'], titleVegetarian, txtVegetarian)
+  Pusher.push(['lunch', 'meat'], titleMeat, txtVegetarian)
+  Pusher.push(['teste'], titleMeat, txtVegetarian)
+}
 
 // Create a timer to fetch the cardapio every hour
 setInterval(syncCardapio, 60 * 1000 * 60 * SYNC_HOURS)
