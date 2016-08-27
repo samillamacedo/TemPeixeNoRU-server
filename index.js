@@ -55,7 +55,7 @@ function syncCardapio(){
 }
 
 // Lift server
-server.listen(serverPort, serverIPAddress, (err) => {
+server.listen(serverPort, (err) => {
   console.log(`Server is UP: ${serverIPAddress}:${serverPort}`)
 })
 
