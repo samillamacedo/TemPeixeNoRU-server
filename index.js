@@ -18,13 +18,24 @@ let cardapioData = null
 let cardapioError = null
 
 const server = http.createServer((request, response) => {
+  if(request.url == '/' || request.url == ''){
+    response.writeHead(301, {
+      Location: 'https://play.google.com/store/apps/details?id=com.samyvan.tempeixenoru'
+    });
+
+    response.end();
+    return;
+  }
+  
   if(request.url != '/api/v1/cardapio.json'){
     response.writeHead(404, {
       'Content-Type': 'text/html; charset=utf-8',
     })
 
     response.end('Página não encontrada')
+    return;
   }
+
 
   // If in error state...
   if(cardapioError || !cardapioData){
