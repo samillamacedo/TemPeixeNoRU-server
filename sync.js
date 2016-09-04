@@ -17,7 +17,7 @@ const URL_CARDAPIO = 'http://proap.ufabc.edu.br/images/PDF/Cardapio.pdf'
 let NO_MEAL_GROUP = {
   group: 'Recesso',
   items: [{
-    name: 'Vário Nada',
+    name: 'Vários Nada',
     info: 'Nada também.'
   }],
 }
