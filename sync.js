@@ -16,7 +16,10 @@ const URL_CARDAPIO = 'http://proap.ufabc.edu.br/images/PDF/Cardapio.pdf'
 
 let NO_MEAL_GROUP = {
   group: 'Recesso',
-  items: [],
+  items: [{
+    name: 'Vário Nada',
+    info: 'Nada também.'
+  }],
 }
 
 let downloadCardapio = (fileName, cb) => {
