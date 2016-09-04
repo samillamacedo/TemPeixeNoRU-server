@@ -26,7 +26,7 @@ const server = http.createServer((request, response) => {
     response.end();
     return;
   }
-  
+
   if(request.url != '/api/v1/cardapio.json'){
     response.writeHead(404, {
       'Content-Type': 'text/html; charset=utf-8',

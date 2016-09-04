@@ -14,6 +14,11 @@ const CardapioObservationParser = require('./CardapioObservationParser')
 
 const URL_CARDAPIO = 'http://proap.ufabc.edu.br/images/PDF/Cardapio.pdf'
 
+let NO_MEAL_GROUP = {
+  group: 'Recesso',
+  items: [],
+}
+
 let downloadCardapio = (fileName, cb) => {
   let file = fs.createWriteStream(fileName);
   let request = http.get(URL_CARDAPIO, function (response) {
@@ -184,6 +189,15 @@ exports.fetch = (next) => {
           }
 
           json.menu.push(menu)
+        }
+
+        // Filter out days with no foods
+        for(let m in json.menu){
+          let menu = json.menu[m]
+          let groups = _.map(menu.meals, 'group')
+          if(groups.length <= 0){
+            menu.meals.push(NO_MEAL_GROUP)
+          }
         }
 
         // Callback with parsed cardapio
