@@ -17,7 +17,7 @@ const MONTHS = {
   setembro: 9,
   outubro: 10,
   novembro: 11,
-  dezembro: 11,
+  dezembro: 12,
 }
 
 // Verifies if a given text is a Month header,
