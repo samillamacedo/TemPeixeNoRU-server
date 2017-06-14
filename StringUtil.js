@@ -6,6 +6,7 @@ const CHARS_NOT_NORMAL = /[^a-zA-Z\ ]/g
 const MULTIPLE_SPACES  = /\s\s+/g
 
 exports.normalize = (str) => {
+  str = str || ''
   str = str.trim()
   str = str.replace(/\n/g, ' ')
   str = str.replace(/\*/g, '')
